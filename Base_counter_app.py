@@ -9,6 +9,8 @@ import os
 def count_bases_and_sequences(fasta_file):
     bases_count = {'A': 0, 'T': 0, 'G': 0, 'C': 0}
     sequence_count = 0
+    sum = 0
+    #sum = bases_count['A'] + bases_count['T'] + bases_count['G'] + bases_count['C']
 
     with open(fasta_file, 'r') as file:
         sequences = file.readlines()
@@ -23,14 +25,15 @@ def count_bases_and_sequences(fasta_file):
     
     for base in current_sequence:
         if base in bases_count:
+            sum += 1
             bases_count[base] += 1
 
-    return sequence_count, bases_count
-
+    return sequence_count, bases_count , sum 
+#na to dw ligo afto edw
 #function for fastq file button
 def count_bases_and_sequences(fastq_file):
     bases_count = {'A': 0, 'T': 0, 'G': 0, 'C': 0}
-    sequence_count = 0
+    sequence_count_fastq = 0
 
     with open(fastq_file, 'r') as file:
         sequences = file.readlines()
@@ -39,7 +42,7 @@ def count_bases_and_sequences(fastq_file):
     for line in sequences:
         line = line.strip()
         if line.startswith('@'):
-            sequence_count += 1
+            sequence_count_fastq += 1
             continue
         current_sequence += line
     
@@ -47,13 +50,13 @@ def count_bases_and_sequences(fastq_file):
         if base in bases_count:
             bases_count[base] += 1
 
-    return sequence_count, bases_count
+    return sequence_count_fastq, bases_count
 
 def process_fasta_file():
     filename = filedialog.askopenfilename(initialdir="/home/", title="Select a .fasta file", filetypes=(("FASTA files", "*.fasta"), ("All files", "*.*")))
     if filename:
-        sequence_count, base_counts = count_bases_and_sequences(filename)
-        message = f"Number of Sequences: {sequence_count}\nA: {base_counts['A']}, T: {base_counts['T']}, G: {base_counts['G']}, C: {base_counts['C']}"
+        sequence_count, base_counts , sum = count_bases_and_sequences(filename)
+        message = f"Number of Sequences: {sequence_count}\nA: {base_counts['A']}, T: {base_counts['T']}, G: {base_counts['G']}, C: {base_counts['C']} , sum : {sum}"
         messagebox.showinfo("File Information", message)
 
 
